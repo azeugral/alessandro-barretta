@@ -20,7 +20,7 @@ with sync_playwright() as p:
       for(const l of a){{ls.push([await Ld(l[0]),await Ld(l[1]),l[2]])}} window.Pr=prensa(document.getElementById('c'),ls,{{guardar:true,tam:[{W},{H}]}})}}""", lam)
     n = int(round(P * len(lam) * FPS))
     ff = subprocess.Popen(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', str(FPS), '-c:v', 'mjpeg', '-i', '-',
-                           '-c:v', 'libx264', '-preset', 'slow', '-crf', '24', '-pix_fmt', 'yuv420p', '-tune', 'film',
+                           '-c:v', 'libx264', '-preset', 'slow', '-crf', '28', '-pix_fmt', 'yuv420p', '-tune', 'film',
                            '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-g', str(FPS * 2),
                            '-movflags', '+faststart', '-an', str(saida)], stdin=subprocess.PIPE)
     for k in range(n):

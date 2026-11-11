@@ -83,7 +83,7 @@
   function iniciaVideo() {
     if (videoTentado) return; videoTentado = true;
     var v = $('.l-video');
-    v.src = 'assets/video/grabado.mp4?v=1'; v.preload = 'auto';
+    v.src = 'assets/video/grabado.mp4?v=2'; v.preload = 'auto';
     var p = v.play();
     // iPhone em modo de economia recusa o autoplay: aí o shader assume
     if (p && p.catch) p.catch(function () { if (!lamina.classList.contains('gl') && !iniciaGL()) estatico(); });
