@@ -1,0 +1,29 @@
+{
+ "W": 640,
+ "H": 960,
+ "pad": 48,
+ "wmax": 56,
+ "tmax": 4.0,
+ "pecas": [
+  {
+   "s": "hannya",
+   "t": "Hannya",
+   "n": 26040
+  },
+  {
+   "s": "tigre",
+   "t": "Tigre solitario",
+   "n": 28073
+  },
+  {
+   "s": "amaterasu",
+   "t": "Amaterasu",
+   "n": 21252
+  },
+  {
+   "s": "loto",
+   "t": "Calavera y loto",
+   "n": 9849
+  }
+ ]
+}

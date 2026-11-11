@@ -18,9 +18,9 @@
   $$('#menu a').forEach(function (a) { a.addEventListener('click', function () { abre(false); }); });
   addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) abre(false); });
 
-  /* hero: grabado plancha a plancha */
+  /* hero: sumi, cada pintura se forma a pincel */
   var LAM = window.LAM || [], NOMES = LAM.map(function (l) { return l.s; });
-  var P = 7.5, T0 = .3, DL = .38, DUR = .75, K = 6, N = NOMES.length, CICLO = P * N;
+  var P = 5.5, N = NOMES.length, CICLO = P * N;
   var hero = $('.hero'), lamina = $('.lamina'), tit = $('.l-tit');
   var ultI = -1;
   function marca(t) {
@@ -35,18 +35,12 @@
     tit.textContent = (LAM[0] || {}).t || '';
   }
   function iniciaGL() {
-    if (!window.prensa || !N) return false;
-    var teste = document.createElement('canvas').getContext('webgl');
+    if (!window.sumi || !N || !window.fetch) return false;
+    var teste = document.createElement('canvas').getContext('webgl2');
     if (!teste) return false;
-    var cv = $('.l-gl'), carregadas = 0, imgs = [];
-    NOMES.forEach(function (n, i) {
-      ['.webp', '-p.png'].forEach(function (k, j) {
-        var im = new Image(); im.decoding = 'async'; im.src = 'assets/hero/' + n + k + '?v=1';
-        (imgs[i] = imgs[i] || [])[j] = im;
-        im.onload = function () { if (++carregadas === N * 2) comeca(); };
-        im.onerror = function () { estatico(); };
-      });
-    });
+    var cv = $('.l-gl'), V = '?v=1';
+    var carrega = function (src) { return new Promise(function (ok, erro) { var im = new Image(); im.decoding = 'async'; im.onload = function () { ok(im); }; im.onerror = erro; im.src = src; }); };
+    var bin = function (src) { return fetch(src).then(function (r) { if (!r.ok) throw r.status; return r.arrayBuffer(); }); };
     var H, t0 = 0, vis = true, raf = 0;
     function quadro(ts) {
       if (!t0) t0 = ts;
@@ -54,23 +48,27 @@
       H.desenha(t, devicePixelRatio || 1); marca(t);
       raf = vis ? requestAnimationFrame(quadro) : 0;
     }
-    function comeca() {
-      try { H = window.prensa(cv, imgs.map(function (p, i) { return [p[0], p[1], LAM[i].cores]; })); } catch (e) { H = null; }
-      if (!H) { estatico(); return; }
-      lamina.classList.add('gl');
-      new IntersectionObserver(function (es) {
-        vis = es[0].isIntersecting;
-        if (vis && !raf) { t0 = 0; raf = requestAnimationFrame(quadro); }
-      }).observe(lamina);
-      raf = requestAnimationFrame(quadro);
-    }
+    fetch('assets/hero/pinceladas.json' + V).then(function (r) { return r.json(); }).then(function (meta) {
+      return Promise.all(NOMES.map(function (n) {
+        return Promise.all([bin('assets/hero/' + n + '.bin' + V), carrega('assets/hero/' + n + '.webp' + V)]).then(function (x) { return { bin: x[0], img: x[1] }; });
+      })).then(function (pecas) {
+        try { H = window.sumi(cv, pecas, meta); } catch (e) { H = null; }
+        if (!H) { if (videoTentado) estatico(); else iniciaVideo(); return; }
+        lamina.classList.add('gl');
+        new IntersectionObserver(function (es) {
+          vis = es[0].isIntersecting;
+          if (vis && !raf) { t0 = 0; raf = requestAnimationFrame(quadro); }
+        }).observe(lamina);
+        raf = requestAnimationFrame(quadro);
+      });
+    }).catch(function () { if (videoTentado) estatico(); else iniciaVideo(); });
     return true;
   }
   var videoTentado = false;
   function iniciaVideo() {
     if (videoTentado) return; videoTentado = true;
     var v = $('.l-video');
-    v.src = 'assets/video/grabado.mp4?v=3'; v.preload = 'auto';
+    v.src = 'assets/video/sumi.mp4?v=1'; v.preload = 'auto';
     var p = v.play();
     // iPhone em modo de economia recusa o autoplay: aí o shader assume
     if (p && p.catch) p.catch(function () { if (!lamina.classList.contains('gl') && !iniciaGL()) estatico(); });

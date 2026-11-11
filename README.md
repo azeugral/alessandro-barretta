@@ -2,12 +2,12 @@
 
 Tatuador de japonés tradicional em Palma de Mallorca (@alessandrobarretta_tattoo, 16,3 mil seguidores), residente no Nero Art Tattoo. Prévia feita pela L R G Z, com `noindex`. O site está em espanhol.
 
-**Conceito do hero, "grabado":** as pinturas dele (hannya, tigre solitário, Amaterasu, calavera y loto) são impressas na tela como um ukiyo-e, uma plancha de cor por vez. As cores saem da própria pintura por k-means. Cada cor entra chapada, com o veio da madeira e um leve deslize até o registro, do mais claro ao preto, que é a plancha-chave. Depois o detalhe a pincel da pintura original aparece, a tinta é lavada e vem a próxima peça. A folha fica sobre papel washi, com marcas de registro (kentō) nos cantos de baixo. As planchas se sobrepõem e a arte original se forma em ~3 s (ciclo de 7,5 s). Embaixo da folha, só o nome da peça. No PC (a partir de 1100 px) há colunas espelhadas nos dois lados. Paleta: papel #efe7d9, sumi #151311 e bermellón #c8321f. Fontes: Dela Gothic One e Zen Kaku Gothic New.
+**Conceito do hero, "sumi":** as pinturas dele (hannya, tigre solitário, Amaterasu, calavera y loto) se formam a pincel na tela, como num sumi-e. Primeiro uma aguada grande e mole (nijimi), depois pinceladas cada vez mais finas que seguem o fluxo da pintura, com pincel seco (kasure) no fim do traço, e por último o contorno em traços caligráficos. Tudo nasce em tinta preta diluída; a cor escorre por cima em manchas a partir de ~1,4 s, a pintura original assenta por baixo (~3,5 s) e depois a folha é lavada para a próxima peça (ciclo de 7,5 s). A folha fica sobre papel washi, com marcas de registro (kentō) nos cantos de baixo, e embaixo só o nome da peça. No PC (a partir de 1100 px) há colunas espelhadas nos dois lados. Paleta: papel #efe7d9, sumi #151311 e bermellón #c8321f. Fontes: Dela Gothic One e Zen Kaku Gothic New.
 
-- No PC roda em WebGL (`assets/js/prensa.js`). No celular toca o MP4 do mesmo shader (`assets/video/grabado.mp4`, 30 s em loop). Se o iPhone recusar o vídeo, o shader assume.
-- `tools/laminas.py`: recorta as pinturas em 2:3 e separa as planchas de cor (`assets/hero/<peça>.webp` e `-p.png`, mais `tools/laminas.json`).
+- No PC roda em WebGL2 (`assets/js/sumi.js`, ~78 mil pinceladas nas 4 peças, em `assets/hero/<peça>.bin`). No celular toca o MP4 do mesmo renderizador (`assets/video/sumi.mp4`, 30 s em loop). Se o iPhone recusar o vídeo, o WebGL assume.
+- `tools/laminas.py`: recorta as pinturas em 2:3 (`assets/hero/<peça>.webp`). `tools/pinceladas.py`: gera as pinceladas (campo de fluxo por tensor de estrutura, 5 camadas + contorno) e `assets/hero/pinceladas.json`.
 - `tools/fotos.py`: portfólio (36), disponíveis (12), retrato e `assets/js/dados.js`.
-- `tools/gerar_video.py`: MP4 do hero e capa. `tools/ver_prensa.py`: tira de quadros. `tools/auditar.py`: 13 tamanhos de tela.
+- `tools/gerar_video.py`: MP4 do hero e capa. `tools/ver_sumi.py [peça] [tempos]`: tira de quadros. `tools/auditar.py`: 13 tamanhos de tela.
 - O formulário e os botões "Lo quiero" abrem o WhatsApp +34 622 688 505 (o wa.link da bio) com a mensagem pronta.
 
 ## CONFIRMAR antes de publicar
