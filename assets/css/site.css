@@ -66,7 +66,7 @@ ul,ol{list-style:none}
 .k-d{right:-12px;border-right:1.5px solid var(--sumi)}
 .l-pie{position:absolute;left:0;right:0;top:calc(100% + 20px);display:flex;justify-content:center;font:500 12px/1 var(--txt);letter-spacing:.24em;padding-left:.24em;text-transform:uppercase;color:var(--tinta)}
 .l-tit{white-space:nowrap;transition:opacity .35s var(--ease)}
-.hero::before,.hero::after{content:"";position:absolute;z-index:-1;top:50%;width:min(40vw,620px);aspect-ratio:690/900;background:var(--sumi);-webkit-mask:url(../img/hannya-orn.webp) center/contain no-repeat;mask:url(../img/hannya-orn.webp) center/contain no-repeat;opacity:0;pointer-events:none;transition:opacity 2.4s var(--ease) .6s}
+.hero::before,.hero::after{content:"";position:absolute;z-index:-1;top:50%;width:min(40vw,620px);aspect-ratio:1470/1974;background:var(--sumi);-webkit-mask:url(../img/hannya-orn.svg) center/contain no-repeat;mask:url(../img/hannya-orn.svg) center/contain no-repeat;opacity:0;pointer-events:none;transition:opacity 2.4s var(--ease) .6s}
 .hero::before{right:-7vw;transform:translateY(-52%) rotate(-4deg)}
 .hero::after{left:-7vw;transform:translateY(-52%) scaleX(-1) rotate(-4deg)}
 .pronto.hero::before,.pronto.hero::after{opacity:.075}
