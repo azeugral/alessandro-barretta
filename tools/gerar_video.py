@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-"""Grava o hero (sumi, pintura a pincel) em MP4 para o celular: 720x1080 (2:3), 4 peças x 5,5 s = 22 s,
-30 fps, loop perfeito. Também faz a capa 1200x630. Uso: python tools/gerar_video.py"""
+"""Grava o hero (sumi, pintura a pincel) em MP4 para o celular: 720x1080 (2:3), abertura de 5,5 s (hannya no papel limpo) + laço de 4 peças x 5,5 s;
+no site, ao terminar volta para 5,5 s (início do tigre). 30 fps. Também faz a capa 1200x630. Uso: python tools/gerar_video.py"""
 import base64, json, subprocess
 from pathlib import Path
 from playwright.sync_api import sync_playwright
@@ -12,11 +12,11 @@ from ver_sumi import abre, M
 (S / 'assets/video').mkdir(exist_ok=True)
 saida = S / 'assets/video/sumi.mp4'
 with sync_playwright() as p:
-    b, g = abre(p, W, H)
-    n = int(round(P * len(M['pecas']) * FPS))
+    b, g = abre(p, W, H, False)
+    n = int(round(P * (len(M['pecas']) + 1) * FPS))  # abertura (hannya no papel limpo) + laco de 4 pecas
     ff = subprocess.Popen(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', str(FPS), '-c:v', 'mjpeg', '-i', '-',
                            '-c:v', 'libx264', '-preset', 'slow', '-crf', '28', '-pix_fmt', 'yuv420p', '-tune', 'film',
-                           '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-g', str(FPS * 2),
+                           '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-g', str(FPS * 2), '-force_key_frames', str(P),
                            '-movflags', '+faststart', '-an', str(saida)], stdin=subprocess.PIPE)
     for k in range(n):
         d = g.evaluate(f"(Pr.desenha({k / FPS},1),document.getElementById('c').toDataURL('image/jpeg',.94))")

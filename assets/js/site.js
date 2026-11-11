@@ -68,10 +68,12 @@
   function iniciaVideo() {
     if (videoTentado) return; videoTentado = true;
     var v = $('.l-video');
-    v.src = 'assets/video/sumi.mp4?v=1'; v.preload = 'auto';
+    v.src = 'assets/video/sumi.mp4?v=2'; v.preload = 'auto';
     var p = v.play();
     // iPhone em modo de economia recusa o autoplay: aí o shader assume
     if (p && p.catch) p.catch(function () { if (!lamina.classList.contains('gl') && !iniciaGL()) estatico(); });
+    // o video abre com a hannya nascendo do papel limpo; o laco volta ao inicio do tigre, que comeca com a hannya pronta
+    v.addEventListener('ended', function () { v.currentTime = P; v.play().catch(function () {}); });
     v.addEventListener('playing', function () { lamina.classList.add('vd'); }, { once: true });
     v.addEventListener('error', function () { if (!iniciaGL()) estatico(); });
     (function laco() { if (!v.paused && lamina.classList.contains('vd')) marca(v.currentTime % CICLO); requestAnimationFrame(laco); })();

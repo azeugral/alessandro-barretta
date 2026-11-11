@@ -13,13 +13,13 @@ ts = [float(x) for x in sys.argv[2:]] or [.3, .6, .9, 1.2, 1.5, 1.8, 2.1, 2.5, 3
 TW, TH = 400, 600
 
 
-def abre(p, w, h):
+def abre(p, w, h, laco=True):
     b = p.chromium.launch(channel='msedge', args=['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'])
     g = b.new_page(); g.set_content('<canvas id=c></canvas>')
     g.add_script_tag(content=(S / 'assets/js/sumi.js').read_text(encoding='utf8'))
-    g.evaluate("""async([a,m,w,h])=>{const ps=[];for(const [bn,im] of a){const u=Uint8Array.from(atob(bn),c=>c.charCodeAt(0));
+    g.evaluate("""async([a,m,w,h,l])=>{const ps=[];for(const [bn,im] of a){const u=Uint8Array.from(atob(bn),c=>c.charCodeAt(0));
       const i=new Image();i.src=im;await i.decode();ps.push({bin:u.buffer,img:i})}
-      window.Pr=sumi(document.getElementById('c'),ps,m,{guardar:true,tam:[w,h],laco:true})}""", [pec, M, w, h])
+      window.Pr=sumi(document.getElementById('c'),ps,m,{guardar:true,tam:[w,h],laco:l})}""", [pec, M, w, h, laco])
     return b, g
 
 
