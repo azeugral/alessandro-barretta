@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Grava o hero (grabado plancha a plancha) em MP4 para o celular: 720x1080 (2:3), 4 lâminas x 9 s = 36 s,
+"""Grava o hero (grabado plancha a plancha) em MP4 para o celular: 720x1080 (2:3), 4 lâminas x 7,5 s = 30 s,
 30 fps, loop perfeito. Também faz a capa 1200x630. Uso: python tools/gerar_video.py"""
 import base64, json, subprocess
 from pathlib import Path
@@ -7,7 +7,7 @@ from playwright.sync_api import sync_playwright
 from PIL import Image
 S = Path(__file__).resolve().parent.parent
 L = json.loads((S / 'tools/laminas.json').read_text(encoding='utf8'))
-W, H, FPS, P = 720, 1080, 30, 9.0
+W, H, FPS, P = 720, 1080, 30, 7.5
 du = lambda f, m: f'data:{m};base64,' + base64.b64encode((S / 'assets/hero' / f).read_bytes()).decode()
 lam = [[du(l['s'] + '.webp', 'image/webp'), du(l['s'] + '-p.png', 'image/png'), l['cores']] for l in L]
 (S / 'assets/video').mkdir(exist_ok=True)

@@ -20,32 +20,19 @@
 
   /* hero: grabado plancha a plancha */
   var LAM = window.LAM || [], NOMES = LAM.map(function (l) { return l.s; });
-  var P = 9.0, T0 = .6, DL = .72, K = 6, N = NOMES.length, CICLO = P * N;
-  var hero = $('.hero'), lamina = $('.lamina'), tit = $('.l-tit'), fase = $('.l-fase'), sw = $$('.l-planchas i');
-  var ultI = -1, ultK = -9;
-  function hex(c) { return 'rgb(' + c.map(function (v) { return Math.round(v * 255); }).join(',') + ')'; }
+  var P = 7.5, T0 = .3, DL = .38, DUR = .75, K = 6, N = NOMES.length, CICLO = P * N;
+  var hero = $('.hero'), lamina = $('.lamina'), tit = $('.l-tit');
+  var ultI = -1;
   function marca(t) {
-    var i = Math.floor(t / P) % N, s = t - Math.floor(t / P) * P, k = Math.floor((s - T0) / DL);
-    if (s >= P - 1) k = 99; else if (k >= K) k = s < T0 + K * DL + 1.2 ? K : K + 1;
+    var i = Math.floor(t / P) % N;
     if (i !== ultI) {
-      ultI = i; ultK = -9; tit.style.opacity = 0;
+      ultI = i; tit.style.opacity = 0;
       setTimeout(function () { tit.textContent = (LAM[i] || {}).t || ''; tit.style.opacity = 1; }, 200);
-    }
-    if (k !== ultK) {
-      ultK = k;
-      var cores = (LAM[i] || {}).cores || [];
-      sw.forEach(function (b, j) {
-        var on = k >= 0 && j <= k && k < 99;
-        b.style.background = on ? hex(cores[j] || [0, 0, 0]) : 'transparent';
-        b.style.borderColor = on ? 'transparent' : '';
-      });
-      fase.textContent = k < 0 ? 'Papel' : k < K ? 'Plancha ' + (k + 1) + ' de ' + K : k === K ? 'Pincel' : k === 99 ? 'Lavado' : 'Terminado';
     }
   }
   function estatico() {
     $('.l-poster').src = 'assets/hero/hannya.webp';
-    tit.textContent = (LAM[0] || {}).t || ''; fase.textContent = 'Terminado';
-    var c = (LAM[0] || {}).cores || []; sw.forEach(function (b, j) { b.style.background = hex(c[j] || [0, 0, 0]); b.style.borderColor = 'transparent'; });
+    tit.textContent = (LAM[0] || {}).t || '';
   }
   function iniciaGL() {
     if (!window.prensa || !N) return false;
@@ -83,7 +70,7 @@
   function iniciaVideo() {
     if (videoTentado) return; videoTentado = true;
     var v = $('.l-video');
-    v.src = 'assets/video/grabado.mp4?v=2'; v.preload = 'auto';
+    v.src = 'assets/video/grabado.mp4?v=3'; v.preload = 'auto';
     var p = v.play();
     // iPhone em modo de economia recusa o autoplay: aí o shader assume
     if (p && p.catch) p.catch(function () { if (!lamina.classList.contains('gl') && !iniciaGL()) estatico(); });
